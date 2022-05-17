@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "api": "apps/api",
+    "api-interfaces": "libs/api-interfaces",
+    "proof": "apps/proof",
+    "proof-e2e": "apps/proof-e2e"
+  }
+}
