@@ -65,15 +65,14 @@ export class AppService {
 
   private getAttendees(values: string[][]): Attendee[] {
     const attendees: Attendee[] = [];
-    const keys = values[0];
+    const keys = values[0].map(val => toCamelCaseFromText(val));
 
     for (let j = 1; j < values.length; j++) {
       const attendee: Partial<Attendee> = {};
       const row = values[j];
 
       for(let i = 0; i < keys.length; i++) {
-        const key = toCamelCaseFromText(keys[i]);
-        attendee[key] = row[i];
+        attendee[keys[i]] = row[i];
       }
 
       attendees.push(attendee as Attendee);
