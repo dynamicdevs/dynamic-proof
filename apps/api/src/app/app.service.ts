@@ -1,8 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JWT } from 'google-auth-library';
 import { google } from 'googleapis';
 import { ConfigType } from '@nestjs/config';
 import config from '@env';
+import { Attende } from 'src/models';
+import { toCamelCaseFromText } from '@utils/text.utils';
 
 @Injectable()
 export class AppService {
@@ -21,43 +23,46 @@ export class AppService {
     this.scopes = ['https://www.googleapis.com/auth/spreadsheets'];
   }
 
-  public async getData(): Promise<any> {
+  public async getAttendeesList(): Promise<Attende[]> {
     const tokenGoogleApi = this.getToken();
-    console.log('tokenGoogleApi: ', tokenGoogleApi);
-
-    let attendees: any[] = [];
-    let response = await this.getValues(this.spreadsheetId, 'A:Z', tokenGoogleApi);
-    console.log(response);
-
-    let headers = response.values[0];
-
-    for (let j = 1; j < response.values.length; j++) {
-      let participant: any = {};
-      let row = response.values[j];
-
-      for(let i = 0; i < headers.length; i++) {
-        participant[headers[i]] = row[i];
-      }
-
-      attendees.push(participant);
+    const response = await this.getValues(this.spreadsheetId, 'A:Z', tokenGoogleApi);
+    if (!response.values[0]) {
+      throw new HttpException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        error: 'Empty headers in backend data format ',
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    return attendees;
+    return this.getAttendees(response.values);
   }
 
   private async getValues(spreadsheetId: string, range: string, auth: JWT) {
     const service = google.sheets({version: 'v4', auth});
-    // eslint-disable-next-line no-useless-catch
-    try {
-      const result = await service.spreadsheets.values.get({
-        spreadsheetId: spreadsheetId,
-        range: range,
+    const result = await service.spreadsheets.values.get({
+      spreadsheetId: spreadsheetId,
+      range: range,
 
-      });
-      return result.data;
-    } catch(err) {
-      throw err;
+    });
+    return result.data;
+  }
+
+  private getAttendees(values: string[][]): Attende[] {
+    const attendees: Attende[] = [];
+    const keys = values[0];
+
+    for (let j = 1; j < values.length; j++) {
+      const attendee: Partial<Attende> = {};
+      const row = values[j];
+
+      for(let i = 0; i < keys.length; i++) {
+        const key = toCamelCaseFromText(keys[i]);
+        attendee[key] = row[i];
+      }
+
+      attendees.push(attendee as Attende);
     }
+
+    return attendees;
   }
 
   private getToken(): JWT {

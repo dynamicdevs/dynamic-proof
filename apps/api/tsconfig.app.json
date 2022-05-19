@@ -8,7 +8,8 @@
     "target": "es2015",
     "baseUrl": ".",
     "paths": {
-      "@env": ["./src/environment"]
+      "@env": ["./src/environment"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
