@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { JWT } from 'google-auth-library';
 import { google } from 'googleapis';
 import { ConfigType } from '@nestjs/config';
 import config from '@env';
-import { Attende } from 'src/models';
+import { Attendee, AttendeeResponse } from 'src/models';
 import { toCamelCaseFromText } from '@utils/text.utils';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class AppService {
     this.scopes = ['https://www.googleapis.com/auth/spreadsheets'];
   }
 
-  public async getAttendeesList(): Promise<Attende[]> {
+  public async getAttendeesList(): Promise<Attendee[]> {
     const tokenGoogleApi = this.getToken();
     const response = await this.getValues(this.spreadsheetId, 'A:Z', tokenGoogleApi);
     if (!response.values[0]) {
@@ -36,22 +36,39 @@ export class AppService {
     return this.getAttendees(response.values);
   }
 
+  public async getAttendee(attendeeId: string): Promise<AttendeeResponse> {
+    const attendees = await this.getAttendeesList();
+    const attendee = attendees.find(val => {
+      return val.id === attendeeId;
+    });
+    if (!attendee) {
+      throw new NotFoundException(`Attendee with id: ${attendeeId} not found`);
+    }
+    const { id, name, lastname, eventName, issueDate } = attendee;
+    return {
+      id,
+      name,
+      lastname,
+      eventName,
+      issueDate
+    };
+  }
+
   private async getValues(spreadsheetId: string, range: string, auth: JWT) {
     const service = google.sheets({version: 'v4', auth});
     const result = await service.spreadsheets.values.get({
       spreadsheetId: spreadsheetId,
       range: range,
-
     });
     return result.data;
   }
 
-  private getAttendees(values: string[][]): Attende[] {
-    const attendees: Attende[] = [];
+  private getAttendees(values: string[][]): Attendee[] {
+    const attendees: Attendee[] = [];
     const keys = values[0];
 
     for (let j = 1; j < values.length; j++) {
-      const attendee: Partial<Attende> = {};
+      const attendee: Partial<Attendee> = {};
       const row = values[j];
 
       for(let i = 0; i < keys.length; i++) {
@@ -59,7 +76,7 @@ export class AppService {
         attendee[key] = row[i];
       }
 
-      attendees.push(attendee as Attende);
+      attendees.push(attendee as Attendee);
     }
 
     return attendees;

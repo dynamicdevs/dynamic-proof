@@ -1,4 +1,4 @@
-export interface Attende {
+export type Attendee = {
   id: string;
   name: string;
   lastname: string;
@@ -11,3 +11,6 @@ export interface Attende {
   certificateUrl: string;
   observations: string;
 }
+
+export type AttendeeResponse = Pick<Attendee, 'id'
+  | 'name' | 'lastname' | 'eventName' | 'issueDate'>;
