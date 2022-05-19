@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { Message } from '@proof/api-interfaces';
 
 import { AppService } from './app.service';
 

@@ -5,7 +5,11 @@
     "module": "commonjs",
     "types": ["node"],
     "emitDecoratorMetadata": true,
-    "target": "es2015"
+    "target": "es2015",
+    "baseUrl": ".",
+    "paths": {
+      "@env": ["./src/environment"]
+    }
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
   "include": ["**/*.ts"]

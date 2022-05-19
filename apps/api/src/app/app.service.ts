@@ -1,19 +1,34 @@
-import { Injectable } from '@nestjs/common';
-import { Message } from '@proof/api-interfaces';
+import { Inject, Injectable } from '@nestjs/common';
 import { JWT } from 'google-auth-library';
 import { google } from 'googleapis';
+import { ConfigType } from '@nestjs/config';
+import config from '@env';
+
 @Injectable()
 export class AppService {
 
-  private SERVICE_ACCOUNT_EMAIL: string = "";
-  private SERVICE_ACCOUNT_PRIVATE_KEY: string = "";
-  private SCOPES: string[] = ["https://www.googleapis.com/auth/spreadsheets"];
-  private SPREEDSHEET_ID = "";
+  private serviceAccountEmail: string;
+  private serviceAccountPrivateKey: string;
+  private scopes: string[] = [];
+  private spreadsheetId: string;
+
+  constructor(
+    @Inject(config.KEY) private configService: ConfigType<typeof config>,
+  ) {
+    this.serviceAccountEmail = this.configService.serviceAccountEmail;
+    this.serviceAccountPrivateKey = decodeURI(this.configService.serviceAccountPrivateKey);
+    this.spreadsheetId = this.configService.spreadsheetId;
+    this.scopes = ['https://www.googleapis.com/auth/spreadsheets'];
+  }
 
   public async getData(): Promise<any> {
     const tokenGoogleApi = this.getToken();
+    console.log('tokenGoogleApi: ', tokenGoogleApi);
+
     let attendees: any[] = [];
-    let response = await this.getValues(this.SPREEDSHEET_ID, "A:Z", tokenGoogleApi);
+    let response = await this.getValues(this.spreadsheetId, 'A:Z', tokenGoogleApi);
+    console.log(response);
+
     let headers = response.values[0];
 
     for (let j = 1; j < response.values.length; j++) {
@@ -30,8 +45,9 @@ export class AppService {
     return attendees;
   }
 
-  private async getValues(spreadsheetId, range, auth) {
+  private async getValues(spreadsheetId: string, range: string, auth: JWT) {
     const service = google.sheets({version: 'v4', auth});
+    // eslint-disable-next-line no-useless-catch
     try {
       const result = await service.spreadsheets.values.get({
         spreadsheetId: spreadsheetId,
@@ -45,11 +61,10 @@ export class AppService {
   }
 
   private getToken(): JWT {
-    const auth = new google.auth.JWT({
-      email: this.SERVICE_ACCOUNT_EMAIL,
-      key: this.SERVICE_ACCOUNT_PRIVATE_KEY,
-      scopes: this.SCOPES
+    return  new google.auth.JWT({
+      email: this.serviceAccountEmail,
+      key: this.serviceAccountPrivateKey,
+      scopes: this.scopes
     });
-    return auth;
   }
 }
