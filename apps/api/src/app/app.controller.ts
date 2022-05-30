@@ -1,7 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { Attendee, AttendeeResponse } from 'src/models';
 
-
 import { AppService } from './app.service';
 
 @Controller()
@@ -14,7 +13,14 @@ export class AppController {
   }
 
   @Get('attendees/:id')
-  public async getAttendeeById(@Param('id') id: string): Promise<AttendeeResponse> {
+  public async getAttendeeById(
+    @Param('id') id: string
+  ): Promise<AttendeeResponse> {
     return this.appService.getAttendee(id);
+  }
+
+  @Get('certificates')
+  public getCertificate() {
+    this.appService.generatePDF();
   }
 }

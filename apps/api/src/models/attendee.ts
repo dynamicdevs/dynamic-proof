@@ -10,7 +10,10 @@ export type Attendee = {
   issueDate: string;
   certificateUrl: string;
   observations: string;
-}
+  fullName?: string;
+};
 
-export type AttendeeResponse = Pick<Attendee, 'id'
-  | 'name' | 'lastname' | 'eventName' | 'issueDate'>;
+export type AttendeeResponse = Pick<
+  Attendee,
+  'id' | 'name' | 'lastname' | 'eventName' | 'issueDate'
+>;
