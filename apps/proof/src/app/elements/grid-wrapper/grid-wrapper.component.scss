@@ -1,0 +1,19 @@
+.grid-container {
+  @apply
+  grid
+  grid-cols-4
+  gap-x-4
+  md:grid-cols-12
+  lg:gap-x-6
+  xl:gap-x-8
+}
+
+.container-wrapper {
+  @apply
+  mx-auto
+  w-[calc(100%-3rem)]
+  md:w-[calc(100%-5rem)]
+  lg:w-[calc(100%-120px)]
+  xl:w-[calc(100%-240px)]
+  max-w-[2560px]
+}
