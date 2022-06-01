@@ -1,0 +1,30 @@
+<proof-grid-wrapper>
+  <div class="col-span-4 md:col-start-2 md:col-span-10 lg:col-start-4 lg:col-span-6 pt-10 md:pt-16 pb-10 lg:pb-12">
+    <h3 class="text-primary-neutral-400 font-extrabold uppercase mb-2 md:mb-0 text-center font-montserrat
+      text-heading-08-case md:text-heading-07-case lg:text-heading-06-case"
+    >
+      {{certificate?.headline}}
+    </h3>
+    <h2 class="text-primary-neutral-800 font-extrabold mb-2 md:mb-0 text-center font-montserrat
+      text-heading-06 md:text-heading-04 lg:text-heading-03 xl:text-heading-02"
+    >
+      {{certificate?.name}} {{certificate?.lastname}}
+    </h2>
+    <h3 class="text-primary-neutral-800 font-semibold uppercase text-center mb-10 md:mb-6 font-montserrat
+      text-heading-08-case md:text-heading-07-case lg:text-heading-06-case"
+    >
+      {{certificate?.subtitle}}
+    </h3>
+    <p class="text-primary-neutral-500 text-center
+      text-paragraph-03 lg:text-paragraph-02 xl:text-paragraph-01"
+    >
+      {{certificate?.description}}
+    </p>
+  </div>
+  <div class="col-span-4 md:col-start-2 md:col-span-10 lg:col-start-4 lg:col-span-6 ">
+    <img [src]="certificateUrl + certificate?.certificateImgUrl" alt="Certificate" class="w-full">
+  </div>
+  <div class="col-span-4 md:col-start-2 md:col-span-10 lg:col-start-4 lg:col-span-6 py-10 md:pb-16">
+
+  </div>
+</proof-grid-wrapper>

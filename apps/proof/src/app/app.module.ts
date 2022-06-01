@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ElementsModule } from './elements/elements.module';
+import { AppRoutingModule } from './app.routing';
+import { CertificateComponent } from './certificate/certificate.component';
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent],
-  imports: [BrowserModule, HttpClientModule, ElementsModule],
+  declarations: [AppComponent, CertificateComponent, NxWelcomeComponent],
+  imports: [BrowserModule, HttpClientModule, ElementsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
 })
