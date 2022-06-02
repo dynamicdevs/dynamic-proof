@@ -11,6 +11,7 @@ export type Attendee = {
   certificateUrl: string;
   observations: string;
   fullName?: string;
+  shouldBeGenerated: string;
 };
 
 export type AttendeeResponse = Pick<

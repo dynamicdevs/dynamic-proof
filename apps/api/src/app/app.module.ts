@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import * as Joi from 'joi';
 import config from '@env';
+import { GeneratorModule } from './generator/generator.module';
+import { CertificatesModule } from './certificates/certificates.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +19,8 @@ import config from '@env';
         SPREADSHEET_ID: Joi.string().required(),
       }),
     }),
+    GeneratorModule,
+    CertificatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
