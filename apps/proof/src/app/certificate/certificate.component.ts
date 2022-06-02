@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { environment } from '../../environments/environment';
 import { Certificate } from '../models/certificate';
 
@@ -15,13 +16,17 @@ export class CertificateComponent implements OnInit {
   public certificateUrl: string;
   public currentUrl: string;
 
-  constructor() {
+  constructor(private clipboard: Clipboard) {
     this.certificateUrl = environment.certificateUrl;
     this.currentUrl = window.location.href;
   }
 
   ngOnInit(): void {
     this.certificate = CERTIFICATE;
+  }
+
+  copyText() {
+    this.clipboard.copy(this.currentUrl);
   }
 
 }
