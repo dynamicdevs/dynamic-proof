@@ -23,7 +23,7 @@ export class SheetsLib {
     this.tokenGoogleApi = this.getToken();
   }
 
-  public async getData() {
+  public async getAllDataFromSpreedsheet() {
     const service = google.sheets({ version: 'v4', auth: this.tokenGoogleApi });
 
     const result = await service.spreadsheets.values.get({

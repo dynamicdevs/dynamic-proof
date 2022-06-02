@@ -1,4 +1,4 @@
-export class AttendeeResponseDto {
+export class CertificateResponseDto {
   readonly id: string;
   readonly name: string;
   readonly lastname: string;

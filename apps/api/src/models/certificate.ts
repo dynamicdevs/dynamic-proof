@@ -1,4 +1,4 @@
-export type Attendee = {
+export type Certificate = {
   id: string;
   name: string;
   lastname: string;

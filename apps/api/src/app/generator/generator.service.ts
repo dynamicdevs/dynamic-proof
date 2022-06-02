@@ -14,13 +14,13 @@ export class GeneratorService {
   ) {}
 
   public async generateCerficates() {
-    const attendees = await this.certificatesService.getAttendeesList();
+    const certificates = await this.certificatesService.getCertificatesList();
     const values = [];
-    attendees.map((attendee) => {
-      if (attendee.shouldBeGenerated === GeneratePdf.YES) {
-        attendee.fullName = `${attendee.name} ${attendee.lastname}`;
+    certificates.map((certificate) => {
+      if (certificate.shouldBeGenerated === GeneratePdf.YES) {
+        certificate.fullName = `${certificate.name} ${certificate.lastname}`;
 
-        this.pdfService.generatePdf(attendee);
+        this.pdfService.generatePdf(certificate);
 
         values.push(GeneratePdf.NO);
       } else {

@@ -3,11 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { create } from 'pdf-creator-node';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import { Attendee } from 'src/models';
+import { Certificate } from 'src/models';
 
 @Injectable()
 export class PdfService {
-  public async generatePdf(attendee: Attendee) {
+  public async generatePdf(certificate: Certificate) {
     const html = readFileSync(
       resolve(
         process.cwd(),
@@ -24,9 +24,9 @@ export class PdfService {
     const document = {
       html: html,
       data: {
-        attendee: attendee,
+        attendee: certificate,
       },
-      path: `apps/api/src/outputs/${attendee.id}.pdf`,
+      path: `apps/api/src/outputs/${certificate.id}.pdf`,
       type: '',
     };
 

@@ -1,20 +1,20 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { AttendeeResponseDto } from 'src/dtos';
-import { Attendee } from 'src/models';
+import { CertificateResponseDto } from 'src/dtos';
+import { Certificate } from 'src/models';
 import { CertificatesService } from './certificates.services';
 @Controller('certificates')
 export class CertificatesController {
   constructor(private certificateService: CertificatesService) {}
 
-  @Get('attendees')
-  public async getData(): Promise<Attendee[]> {
-    return this.certificateService.getAttendeesList();
+  @Get()
+  public async getCertificatesList(): Promise<Certificate[]> {
+    return this.certificateService.getCertificatesList();
   }
 
-  @Get('attendees/:id')
-  public async getAttendeeById(
+  @Get(':id')
+  public async getCertificateById(
     @Param('id') id: string
-  ): Promise<AttendeeResponseDto> {
-    return this.certificateService.getAttendee(id);
+  ): Promise<CertificateResponseDto> {
+    return this.certificateService.getCertificateById(id);
   }
 }
