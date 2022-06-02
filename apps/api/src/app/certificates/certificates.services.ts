@@ -4,15 +4,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Attendee, AttendeeResponse } from 'src/models';
+import { Attendee } from 'src/models';
 import { toCamelCaseFromText } from '@utils/text.utils';
 import { SheetsLib } from '../lib/sheets.lib';
+import { AttendeeResponseDto } from 'src/dtos';
 
 @Injectable()
 export class CertificatesService {
   constructor(private sheetsLib: SheetsLib) {}
 
-  public async getAttendee(attendeeId: string): Promise<AttendeeResponse> {
+  public async getAttendee(attendeeId: string): Promise<AttendeeResponseDto> {
     const attendees = await this.getAttendeesList();
     const attendee = attendees.find((val) => {
       return val.id === attendeeId;

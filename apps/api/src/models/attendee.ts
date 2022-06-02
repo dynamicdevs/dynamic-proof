@@ -13,8 +13,3 @@ export type Attendee = {
   fullName?: string;
   shouldBeGenerated: string;
 };
-
-export type AttendeeResponse = Pick<
-  Attendee,
-  'id' | 'name' | 'lastname' | 'eventName' | 'issueDate'
->;

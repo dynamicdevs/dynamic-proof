@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { Attendee, AttendeeResponse } from 'src/models';
+import { AttendeeResponseDto } from 'src/dtos';
+import { Attendee } from 'src/models';
 import { CertificatesService } from './certificates.services';
 @Controller('certificates')
 export class CertificatesController {
@@ -13,7 +14,7 @@ export class CertificatesController {
   @Get('attendees/:id')
   public async getAttendeeById(
     @Param('id') id: string
-  ): Promise<AttendeeResponse> {
+  ): Promise<AttendeeResponseDto> {
     return this.certificateService.getAttendee(id);
   }
 }
