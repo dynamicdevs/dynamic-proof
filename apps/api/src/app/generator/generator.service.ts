@@ -4,6 +4,7 @@ import { CertificatesService } from '../certificates/certificates.services';
 import { SheetsLib } from '../lib/sheets.lib';
 import { GeneratePdf } from './enum';
 import { PdfService } from './services/pdf.services';
+import { CERTIFICATE_SHEET_NAME } from '@utils';
 
 @Injectable()
 export class GeneratorService {
@@ -28,6 +29,8 @@ export class GeneratorService {
       }
     });
 
-    this.sheetsLib.setValues('Sheet1!P2', 'COLUMNS', values);
+    const range = `${CERTIFICATE_SHEET_NAME}!P2`;
+
+    this.sheetsLib.setValues(range, 'COLUMNS', values);
   }
 }

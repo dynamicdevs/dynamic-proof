@@ -1,1 +1,1 @@
-export * from './certificate.dto';
+export * from './certificate.dtos';

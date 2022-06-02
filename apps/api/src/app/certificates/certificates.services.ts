@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Certificate } from 'src/models';
-import { toCamelCaseFromText } from '@utils/text.utils';
+import { toCamelCaseFromText } from '@utils';
 import { SheetsLib } from '../lib/sheets.lib';
 import { CertificateResponseDto } from 'src/dtos';
 
