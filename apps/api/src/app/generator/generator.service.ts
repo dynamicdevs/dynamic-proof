@@ -18,7 +18,9 @@ export class GeneratorService {
     const certificates = await this.certificatesService.getCertificatesList();
     const values = [];
     certificates.map((certificate) => {
-      if (certificate.shouldBeGenerated === GeneratePdf.YES) {
+      if (
+        certificate.shouldBeGenerated.trim().toUpperCase() === GeneratePdf.YES
+      ) {
         certificate.fullName = `${certificate.name} ${certificate.lastname}`;
 
         this.pdfService.generatePdf(certificate);

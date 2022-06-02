@@ -47,10 +47,10 @@ export class CertificatesService {
       );
     }
 
-    return this.getCertificates(response.values);
+    return this.parseSheetDataToCertificatesList(response.values);
   }
 
-  private getCertificates(values: string[][]): Certificate[] {
+  private parseSheetDataToCertificatesList(values: string[][]): Certificate[] {
     const certificates: Certificate[] = [];
     const keys = values[0].map((val) => toCamelCaseFromText(val));
 
