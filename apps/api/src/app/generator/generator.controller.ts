@@ -5,7 +5,7 @@ export class GeneratorController {
   constructor(private generatorService: GeneratorService) {}
 
   @Post('certificates')
-  public getCertificate() {
+  public GenerateCertificate() {
     return this.generatorService.generateCerficates();
   }
 }
