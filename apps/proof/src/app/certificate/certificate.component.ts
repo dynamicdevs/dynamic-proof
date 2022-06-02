@@ -13,9 +13,11 @@ export class CertificateComponent implements OnInit {
 
   public certificate?: Certificate;
   public certificateUrl: string;
+  public currentUrl: string;
 
   constructor() {
     this.certificateUrl = environment.certificateUrl;
+    this.currentUrl = window.location.href;
   }
 
   ngOnInit(): void {

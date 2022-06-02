@@ -1,0 +1,5 @@
+.button {
+  @apply
+    bg-gradient-to-r from-primary-main-500 to-gradient-uranus-100
+    text-primary-wb-white hover:text-secondary-main-900 transition-colors;
+}
