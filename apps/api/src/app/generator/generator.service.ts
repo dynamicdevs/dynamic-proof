@@ -1,47 +1,32 @@
 import { Injectable } from '@nestjs/common';
 
-import { create } from 'pdf-creator-node';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { CertificatesService } from '../certificates/certificates.services';
+import { SheetsLib } from '../lib/sheets.lib';
+import { PdfService } from './services/pdf.services';
 
 @Injectable()
 export class GeneratorService {
-  constructor(private certificatesService: CertificatesService) {}
+  constructor(
+    private certificatesService: CertificatesService,
+    private pdfService: PdfService,
+    private sheetsLib: SheetsLib
+  ) {}
 
-  public async generatePDF() {
-    const html = readFileSync(
-      resolve(
-        process.cwd(),
-        'apps/api/src/app/generator/templates/hackathon.html'
-      ),
-      'utf8'
-    );
-    const options = {
-      format: 'A4',
-      orientation: 'landscape',
-    };
+  public async generateCerficates() {
     const attendees = await this.certificatesService.getAttendeesList();
-
+    const values = [];
     attendees.map((attendee) => {
       if (attendee.shouldBeGenerated === 'SI') {
         attendee.fullName = `${attendee.name} ${attendee.lastname}`;
-        const document = {
-          html: html,
-          data: {
-            attendee: attendee,
-          },
-          path: `apps/api/src/outputs/${attendee.id}.pdf`,
-          type: '',
-        };
-        create(document, options)
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+
+        this.pdfService.generatePdf(attendee);
+
+        values.push('NO');
+      } else {
+        values.push(null);
       }
     });
+
+    this.sheetsLib.setValues('Sheet1!P2', 'COLUMNS', values);
   }
 }

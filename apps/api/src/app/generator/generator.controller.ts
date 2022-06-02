@@ -6,11 +6,6 @@ export class GeneratorController {
 
   @Post('certificates')
   public getCertificate() {
-    return this.generatorService.generatePDF();
+    return this.generatorService.generateCerficates();
   }
-
-  // @Get('update')
-  // public setCellUpdate() {
-  //   return this.appService.setCellUpdate();
-  // }
 }

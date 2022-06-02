@@ -33,17 +33,18 @@ export class SheetsLib {
     return result.data;
   }
 
-  private async setCellValue(
-    spreadsheetId: string,
+  public async setValues(
     range: string,
+    majorDimension: string,
     values: string[]
   ) {
     const service = google.sheets({ version: 'v4', auth: this.tokenGoogleApi });
     const result = await service.spreadsheets.values.update({
-      spreadsheetId: spreadsheetId,
+      spreadsheetId: this.spreadsheetId,
       range: range,
       valueInputOption: 'USER_ENTERED',
       requestBody: {
+        majorDimension: majorDimension,
         values: [values],
       },
     });
