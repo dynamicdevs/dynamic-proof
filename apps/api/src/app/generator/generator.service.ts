@@ -19,11 +19,13 @@ export class GeneratorService {
     const values = [];
     certificates.map((certificate) => {
       if (
-        certificate.shouldBeGenerated.trim().toUpperCase() === GeneratePdf.YES
+        certificate.shouldBeGenerated !== undefined &&
+        certificate.shouldBeGenerated.trim().toLocaleUpperCase() ===
+          GeneratePdf.YES
       ) {
         certificate.fullName = `${certificate.name} ${certificate.lastname}`;
 
-        this.pdfService.generatePdf(certificate);
+        this.pdfService.generatePdfByTemplate(certificate);
 
         values.push(GeneratePdf.NO);
       } else {
@@ -31,7 +33,7 @@ export class GeneratorService {
       }
     });
 
-    const range = `${CERTIFICATE_SHEET_NAME}!P2`;
+    const range = `${CERTIFICATE_SHEET_NAME}!Q2`;
 
     this.sheetsLib.setValues(range, 'COLUMNS', values);
   }

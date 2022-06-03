@@ -7,14 +7,15 @@ import { Certificate } from 'src/models';
 
 @Injectable()
 export class PdfService {
-  public async generatePdf(certificate: Certificate) {
-    const html = readFileSync(
-      resolve(
-        process.cwd(),
-        'apps/api/src/app/generator/templates/hackathon.html'
-      ),
-      'utf8'
-    );
+  public async generatePdfByTemplate(certificate: Certificate) {
+    const templateName =
+      certificate.templateName === null
+        ? 'default.html'
+        : certificate.templateName.trim();
+
+    const templateUrl = `apps/api/src/app/generator/templates/${templateName}.html`;
+
+    const html = readFileSync(resolve(process.cwd(), templateUrl), 'utf8');
 
     const options = {
       format: 'A4',

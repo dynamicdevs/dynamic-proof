@@ -12,4 +12,5 @@ export type Certificate = {
   observations: string;
   fullName?: string;
   shouldBeGenerated: string;
+  templateName: string;
 };
