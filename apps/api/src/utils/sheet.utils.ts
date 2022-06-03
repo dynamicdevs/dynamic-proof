@@ -1,1 +1,1 @@
-export const CERTIFICATE_SHEET_NAME = 'Sheet1';
+export const CERTIFICATE_SHEET_NAME = 'Certificates';

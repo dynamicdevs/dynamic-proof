@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { CertificatesService } from '../certificates/certificates.services';
 import { CertificateSheetLib } from '../lib/certificateSheet.lib';
-import { GeneratePdf } from './enum';
+import { Conditional, Template } from '../../enum';
 import { PdfService } from './services/pdf.services';
 import { CERTIFICATE_SHEET_NAME } from '@utils';
 
@@ -21,13 +21,17 @@ export class GeneratorService {
       if (
         certificate.shouldBeGenerated !== undefined &&
         certificate.shouldBeGenerated.trim().toLocaleUpperCase() ===
-          GeneratePdf.YES
+          Conditional.YES
       ) {
         certificate.fullName = `${certificate.name} ${certificate.lastname}`;
 
-        this.pdfService.generatePdfByTemplate(certificate);
+        this.pdfService.generatePdfByTemplate(
+          certificate,
+          Template.HACKATON2022,
+          certificate.id
+        );
 
-        values.push(GeneratePdf.NO);
+        values.push(Conditional.NO);
       } else {
         values.push(null);
       }

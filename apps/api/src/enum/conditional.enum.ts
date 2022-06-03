@@ -1,4 +1,4 @@
-export enum GeneratePdf {
+export enum Conditional {
   YES = 'SI',
   NO = 'NO',
 }

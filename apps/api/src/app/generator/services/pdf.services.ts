@@ -1,19 +1,15 @@
 import { Injectable } from '@nestjs/common';
-
 import { create } from 'pdf-creator-node';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import { Certificate } from 'src/models';
-
 @Injectable()
 export class PdfService {
-  public async generatePdfByTemplate(certificate: Certificate) {
-    const templateName =
-      certificate.templateName === null
-        ? 'default.html'
-        : certificate.templateName.trim();
-
-    const templateUrl = `apps/api/src/app/generator/templates/${templateName}.html`;
+  public async generatePdfByTemplate<Type>(
+    data: Type,
+    template: string,
+    fileName: string
+  ) {
+    const templateUrl = `apps/api/src/app/generator/templates/${template}.html`;
 
     const html = readFileSync(resolve(process.cwd(), templateUrl), 'utf8');
 
@@ -25,9 +21,9 @@ export class PdfService {
     const document = {
       html: html,
       data: {
-        attendee: certificate,
+        ...data,
       },
-      path: `apps/api/src/outputs/${certificate.id}.pdf`,
+      path: `apps/api/src/outputs/${fileName}.pdf`,
       type: '',
     };
 
