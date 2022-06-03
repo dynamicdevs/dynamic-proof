@@ -4,7 +4,7 @@ import { ConfigType } from '@nestjs/config';
 import { JWT } from 'google-auth-library';
 import { google } from 'googleapis';
 
-export class SheetsLib {
+export class CertificateSheetLib {
   private serviceAccountEmail: string;
   private serviceAccountPrivateKey: string;
   private scopes: string[] = [];

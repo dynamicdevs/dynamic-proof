@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CertificatesService } from '../certificates/certificates.services';
-import { SheetsLib } from '../lib/sheets.lib';
+import { CertificateSheetLib } from '../lib/certificateSheet.lib';
 import { GeneratePdf } from './enum';
 import { PdfService } from './services/pdf.services';
 import { CERTIFICATE_SHEET_NAME } from '@utils';
@@ -11,7 +11,7 @@ export class GeneratorService {
   constructor(
     private certificatesService: CertificatesService,
     private pdfService: PdfService,
-    private sheetsLib: SheetsLib
+    private certificateSheetLib: CertificateSheetLib
   ) {}
 
   public async generateCerficates() {
@@ -35,6 +35,6 @@ export class GeneratorService {
 
     const range = `${CERTIFICATE_SHEET_NAME}!Q2`;
 
-    this.sheetsLib.setValues(range, 'COLUMNS', values);
+    this.certificateSheetLib.setValues(range, 'COLUMNS', values);
   }
 }

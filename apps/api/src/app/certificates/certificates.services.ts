@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { Certificate } from 'src/models';
 import { toCamelCaseFromText } from '@utils';
-import { SheetsLib } from '../lib/sheets.lib';
+import { CertificateSheetLib } from '../lib/certificateSheet.lib';
 import { CertificateResponseDto } from 'src/dtos';
 
 @Injectable()
 export class CertificatesService {
-  constructor(private sheetsLib: SheetsLib) {}
+  constructor(private sheetsLib: CertificateSheetLib) {}
 
   public async getCertificateById(
     certificateId: string
