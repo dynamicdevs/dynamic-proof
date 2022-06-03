@@ -1,1 +1,1 @@
-export * from './attendee';
+export * from './certificate';

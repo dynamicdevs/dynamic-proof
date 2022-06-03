@@ -1,4 +1,4 @@
-export type Attendee = {
+export type Certificate = {
   id: string;
   name: string;
   lastname: string;
@@ -10,7 +10,7 @@ export type Attendee = {
   issueDate: string;
   certificateUrl: string;
   observations: string;
-}
-
-export type AttendeeResponse = Pick<Attendee, 'id'
-  | 'name' | 'lastname' | 'eventName' | 'issueDate'>;
+  fullName?: string;
+  shouldBeGenerated: string;
+  templateName: string;
+};
