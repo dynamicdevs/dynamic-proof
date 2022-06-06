@@ -10,6 +10,10 @@ body {
 }
 
 @layer utilities {
+  .symbol-md {
+    @apply w-6 h-6 #{!important};
+  }
+
   .btn-sm {
     @apply
     px-4 py-1
