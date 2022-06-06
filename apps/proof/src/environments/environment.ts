@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  assetsUrl: 'https://certificates-assets.azureedge.net/',
+  certificateUrl: 'https://certificates.azureedge.net/',
 };
 
 /*

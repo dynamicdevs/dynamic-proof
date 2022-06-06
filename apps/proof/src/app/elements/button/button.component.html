@@ -1,0 +1,31 @@
+
+<a *ngIf="!!url && !!download" class="w-fit font-bold button {{className}}"
+  [href]="url"
+  [download]="download"
+  [target]="target"
+  (click)="onClick($event)">
+  <span class="truncate">
+    <ng-container *ngTemplateOutlet="linkTemplate"></ng-container>
+  </span>
+</a>
+
+<a *ngIf="!!url && !download" class="w-fit font-bold button {{className}}"
+  [href]="url"
+  [target]="target"
+  (click)="onClick($event)">
+  <span class="truncate">
+    <ng-container *ngTemplateOutlet="linkTemplate"></ng-container>
+  </span>
+</a>
+
+<button *ngIf="!url" class="w-fit font-bold button {{className}}"
+  (click)="onClick($event)">
+  <span class="truncate">
+    <ng-container *ngTemplateOutlet="linkTemplate"></ng-container>
+  </span>
+</button>
+
+
+<ng-template #linkTemplate>
+  <ng-content></ng-content>
+</ng-template>

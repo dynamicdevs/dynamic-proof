@@ -1,0 +1,77 @@
+<proof-grid-wrapper>
+  <div class="col-span-4 md:col-start-2 md:col-span-10 lg:col-start-4 lg:col-span-6 pt-10 md:pt-16 pb-10 lg:pb-12">
+    <h3 class="text-primary-neutral-400 font-extrabold uppercase mb-2 md:mb-0 text-center font-montserrat
+      text-heading-08-case md:text-heading-07-case lg:text-heading-06-case"
+    >
+      {{certificate?.headline}}
+    </h3>
+    <h2 class="text-primary-neutral-800 font-extrabold mb-2 md:mb-0 text-center font-montserrat
+      text-heading-06 md:text-heading-04 lg:text-heading-03 xl:text-heading-02"
+    >
+      {{certificate?.name}} {{certificate?.lastname}}
+    </h2>
+    <h3 class="text-primary-neutral-800 font-semibold uppercase text-center mb-10 md:mb-6 font-montserrat
+      text-heading-08-case md:text-heading-07-case lg:text-heading-06-case"
+    >
+      {{certificate?.subtitle}}
+    </h3>
+    <p class="text-primary-neutral-500 text-center
+      text-paragraph-03 lg:text-paragraph-02 xl:text-paragraph-01"
+    >
+      {{certificate?.description}}
+    </p>
+  </div>
+  <div class="col-span-4 md:col-start-2 md:col-span-10 lg:col-start-4 lg:col-span-6 ">
+    <img [src]="certificateUrl + certificate?.certificateImgUrl" alt="Certificate" class="w-full">
+  </div>
+  <div class="col-span-4 md:col-start-2 md:col-span-10 lg:col-start-4 lg:col-span-6 py-10 md:pb-16">
+    <div class=" md:flex gap-x-4 w-full mb-6">
+      <div class="relative grow">
+        <input type="text" disabled class="w-full px-4 py-2 lg:p-4 rounded-4xl
+          text-button-05 lg:text-button-04 box-border h-8 lg:h-12
+        text-primary-neutral-900 border border-primary-neutral-300" [value]="currentUrl">
+        <symbol-icon name="copy" icon-class="symbol-sm"
+          (click)="copyText()"
+          class="absolute right-4 top-2 text-primary-neutral-300 cursor-pointer md:!hidden">
+        </symbol-icon>
+      </div>
+      <proof-button className="btn-md lg:btn-lg hidden md:block" (clickEvent)="copyText()">
+        Copiar enlace
+      </proof-button>
+    </div>
+    <div class="w-full flex gap-x-4 mb-6 justify-center">
+      <span class="text-paragraph-03 lg:text-paragraph-02 xl:text-paragraph-01">Compártelo en:</span>
+      <div class="flex gap-x-4">
+        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+          shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
+          <symbol-icon name="facebook" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          </symbol-icon>
+        </div>
+        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+          shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
+          <symbol-icon name="twitter" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          </symbol-icon>
+        </div>
+        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+          shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
+          <symbol-icon name="linkedin" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          </symbol-icon>
+        </div>
+        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+          shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
+          <symbol-icon name="email" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          </symbol-icon>
+        </div>
+      </div>
+    </div>
+    <div class="w-full flex justify-center">
+      <proof-button className="btn-sm md:btn-md self-center"
+        download="certificate.pdf"
+        target="_blank"
+        [url]="certificateUrl + certificate?.certificatePdfUrl"
+      >
+        Descargar en PDF
+      </proof-button>
+    </div>
+  </div>
+</proof-grid-wrapper>

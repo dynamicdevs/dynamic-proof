@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  @apply
+  text-primary-neutral-800
+}
+
+@layer utilities {
+  .symbol-md {
+    @apply w-6 h-6 #{!important};
+  }
+
+  .btn-sm {
+    @apply
+    px-4 py-1
+    text-button-05
+    h-6
+    rounded-xl
+  }
+
+  .btn-md {
+    @apply
+    px-4 py-2
+    text-button-05
+    h-8
+    rounded-2xl
+  }
+
+  .btn-lg {
+    @apply
+    px-6 py-4
+    text-button-04
+    h-12
+    rounded-3xl
+  }
+
+  .btn-xl {
+    @apply
+    px-6 py-4
+    text-button-03
+    h-14
+    rounded-[28px]
+  }
+}
