@@ -1,13 +1,60 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
     <title>Hello world!</title>
+    <link rel="stylesheet" href="{{urlBase}}/assets/styles.css"/>
   </head>
-  <body>
-    <h1>HACKATON2022</h1>
-    <h2>{{attendee.fullName}}</h2>
-    <h3>{{attendee.eventName}}</h3>
-    <p>{{attendee.issueDate}}</p>
+  <body class="px-28 h-[793px] flex flex-col justify-center bg-[url({{urlBase}}/assets/templates/001/background.png)]">
+    <header class="flex justify-end">
+      <img src="{{urlBase}}/assets/templates/001/logo-hackathon2022.png" alt="Logo Hackathon 2022">
+    </header>
+    <main class="flex">
+      <div class="w-full mr-8">
+        <img
+          src="{{urlBase}}/assets/logo-dynamic.svg"
+          alt="Logo Dynamic Devs"
+          class="w-[270px]">
+        <div class="mt-6 space-y-2">
+          <h6 class="text-heading-06-case font-semibold text-primary-neutral-100 uppercase">Agradece y certifica a</h6>
+          <div class="text-heading-03 text-primary-main-400 font-bold uppercase space-y-1.5">
+            <h2>{{name}}</h2>
+            <h2>{{lastname}}</h2>
+          </div>
+          <p class="text-paragraph-02 text-primary-neutral-100 w-[547px]">
+            por haber participado y completado satisfactoriamente las actividades del evento online
+          </p>
+          <h3 class="text-heading-05 text-primary-main-300 font-bold">{{eventName}}</h3>
+          <h6 class="text-heading-08 text-primary-neutral-400 font-bold uppercase">{{issueDate}}</h6>
+        </div>
+      </div>
+      <div class="flex flex-col justify-center space-y-8 w-[200px]">
+        <div class="text-primary-neutral-100 flex flex-col">
+          <div class="h-26 flex items-center justify-center">
+            <img
+              src="{{urlBase}}/assets/templates/001/jonathan-gonzalez-signature.png"
+              alt="Firma CEO"
+              class="w-fit h-fit">
+          </div>
+          <h6 class="text-heading-08 text-primary-neutral-100 font-bold self-end uppercase">Jonathan González</h6>
+          <p class="text-paragraph-04 text-primary-neutral-100 self-end">CEO Dynamic Devs</p>
+        </div>
+        <div class="text-primary-neutral-100 flex flex-col">
+          <div class="h-26 flex items-center justify-center">
+            <img
+              src="{{urlBase}}/assets/templates/001/cesar-contreras-signature.png"
+              alt="Firma CTO"
+              class="w-fit h-fit">
+          </div>
+          <h6 class="text-heading-08 text-primary-neutral-100 font-bold self-end uppercase">César contreras</h6>
+          <p class="text-paragraph-04 text-primary-neutral-100 self-end">CTO Dynamic Devs</p>
+        </div>
+      </div>
+    </main>
+    <footer class="mt-[54px]">
+      <img
+        src="{{urlBase}}/certificates/001/{{id}}/code-qr.svg"
+        alt="Código QR"
+        class="h-[94px] w-[94px]">
+    </footer>
   </body>
 </html>
