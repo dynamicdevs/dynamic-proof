@@ -4,7 +4,7 @@ import { CertificatesService } from '../certificates/certificates.services';
 import { CertificateSheetLib } from '../lib/certificateSheet.lib';
 import { Conditional, Template } from '../../enum';
 import { PdfService } from './services/pdf.services';
-import { CERTIFICATE_SHEET_NAME } from '@utils';
+import { CERTIFICATE_SHEET_NAME, formatDate } from '@utils';
 
 @Injectable()
 export class GeneratorService {
@@ -23,7 +23,7 @@ export class GeneratorService {
         certificate.shouldBeGenerated.trim().toLocaleUpperCase() ===
           Conditional.YES
       ) {
-        certificate.fullName = `${certificate.name} ${certificate.lastname}`;
+        certificate.issueDate = formatDate(certificate.issueDate);
 
         this.pdfService.generatePdfByTemplate(
           certificate,
