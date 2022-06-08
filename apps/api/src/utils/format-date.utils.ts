@@ -1,4 +1,4 @@
-export const formatDate = (value: string): string => {
+export const longDateFormat = (value: string): string => {
   const values = value.split('/').map((val) => parseInt(val));
 
   const date = new Date(values[2], values[1], values[0]);
