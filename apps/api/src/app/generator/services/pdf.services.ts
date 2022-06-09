@@ -1,9 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { create } from 'pdf-creator-node';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+import config from '@env';
+import { ConfigType } from '@nestjs/config';
 @Injectable()
 export class PdfService {
+  private urlBase: string;
+
+  constructor(
+    @Inject(config.KEY) private configService: ConfigType<typeof config>
+  ) {
+    this.urlBase = this.configService.urlBase;
+  }
+
   public async generatePdfByTemplate<Type>(
     data: Type,
     template: string,
@@ -22,6 +32,7 @@ export class PdfService {
       html: html,
       data: {
         ...data,
+        urlBase: this.urlBase,
       },
       path: `apps/api/src/outputs/${fileName}.pdf`,
       type: '',
