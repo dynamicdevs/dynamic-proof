@@ -28,6 +28,7 @@
     "@nrwl/angular": "14.1.9",
     "googleapis": "^100.0.0",
     "joi": "^17.6.0",
+    "node-html-to-image": "^3.2.4",
     "pdf-creator-node": "^2.3.4",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
