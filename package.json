@@ -30,6 +30,7 @@
     "joi": "^17.6.0",
     "node-html-to-image": "^3.2.4",
     "pdf-creator-node": "^2.3.4",
+    "qrcode": "^1.5.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
