@@ -17,6 +17,7 @@ export class PdfService {
   public async generatePdfByTemplate<Type>(
     data: Type,
     template: string,
+    path: string,
     fileName: string
   ) {
     const templateUrl = `apps/api/src/app/generator/templates/${template}.html`;
@@ -34,12 +35,14 @@ export class PdfService {
         ...data,
         urlBase: this.urlBase,
       },
-      path: `apps/api/src/outputs/${fileName}.pdf`,
+      path: `${path}/${fileName}.pdf`,
       type: '',
     };
 
-    const response = await create(document, options);
-
-    return response;
+    try {
+      await create(document, options);
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 }
