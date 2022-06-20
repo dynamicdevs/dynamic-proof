@@ -1,12 +1,14 @@
 {
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "application",
-  "root": "apps/proof",
   "sourceRoot": "apps/proof/src",
   "prefix": "proof",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/proof",
         "index": "apps/proof/src/index.html",
@@ -14,8 +16,13 @@
         "polyfills": "apps/proof/src/polyfills.ts",
         "tsConfig": "apps/proof/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/proof/src/favicon.ico", "apps/proof/src/assets"],
-        "styles": ["apps/proof/src/styles.scss"],
+        "assets": [
+          "apps/proof/src/favicon.ico",
+          "apps/proof/src/assets"
+        ],
+        "styles": [
+          "apps/proof/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -83,7 +90,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/proof"],
+      "outputs": [
+        "coverage/apps/proof"
+      ],
       "options": {
         "jestConfig": "apps/proof/jest.config.js",
         "passWithNoTests": true

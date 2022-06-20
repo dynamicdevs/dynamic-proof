@@ -42,26 +42,29 @@
     <div class="w-full flex gap-x-4 mb-6 justify-center">
       <span class="text-paragraph-03 lg:text-paragraph-02 xl:text-paragraph-01">Compártelo en:</span>
       <div class="flex gap-x-4">
-        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+        <div shareButton="facebook" [url]="currentUrl"
+          class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
           shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
-          <symbol-icon name="facebook" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          <symbol-icon name="facebook" class="text-primary-wb-white symbol-sm md:symbol-md" type="outline">
           </symbol-icon>
         </div>
-        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+        <div shareButton="twitter" [url]="currentUrl" [description]="description"
+          class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
           shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
-          <symbol-icon name="twitter" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          <symbol-icon name="twitter" class="text-primary-wb-white symbol-sm md:symbol-md" type="outline">
           </symbol-icon>
         </div>
-        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+        <a target="_blank" [href]="linkednUrl"
+          class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
           shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
-          <symbol-icon name="linkedin" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          <symbol-icon name="linkedin" class="text-primary-wb-white symbol-sm md:symbol-md" type="outline">
           </symbol-icon>
-        </div>
-        <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
+        </a>
+        <!-- <div class="rounded-full p-2 bg-primary-main-500 transition-colors hover:bg-primary-main-700 flex justify-center items-center
           shrink-0 h-8 w-8 md:h-10 md:w-10 cursor-pointer">
-          <symbol-icon name="email" icon-class="symbol-sm md:symbol-md" class="text-primary-wb-white" type="outline">
+          <symbol-icon name="email" class="text-primary-wb-white symbol-sm md:symbol-md" type="outline">
           </symbol-icon>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="w-full flex justify-center">
