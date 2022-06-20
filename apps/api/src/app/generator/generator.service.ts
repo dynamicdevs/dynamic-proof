@@ -34,18 +34,20 @@ export class GeneratorService {
 
         const filename = this.getFilename(certificate);
 
-        this.generateQR(path, certificate.id);
+        const response = this.generateQR(path, certificate.id);
 
-        this.pdfService.generatePdfByTemplate(
-          certificate,
-          Template.HACKATON2022,
-          path,
-          filename
-        );
+        if (response) {
+          this.pdfService.generatePdfByTemplate(
+            certificate,
+            Template.HACKATON2022,
+            path,
+            filename
+          );
 
-        this.generateJPEG(certificate, Template.HACKATON2022, path, filename);
+          this.generateJPEG(certificate, Template.HACKATON2022, path, filename);
 
-        values.push(Conditional.NO);
+          values.push(Conditional.NO);
+        }
       } else {
         values.push(null);
       }
@@ -70,9 +72,11 @@ export class GeneratorService {
       content: [{ ...data, output: `${path}/${filename}.png` }],
     };
 
-    const response = await nodeHtmlToImage(options);
-
-    return response;
+    try {
+      await nodeHtmlToImage(options);
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   private async generateQR(path: string, value: string) {
@@ -82,7 +86,13 @@ export class GeneratorService {
 
     const url = `https://www.certificate.dynamicdevs.io/${value}`;
 
-    await QRCode.toFile(`${path}/code-qr.png`, url);
+    try {
+      await QRCode.toFile(`${path}/code-qr.png`, url);
+
+      return true;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   private getFilename(certificate: Certificate) {

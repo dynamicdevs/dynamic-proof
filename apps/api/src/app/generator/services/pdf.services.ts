@@ -39,8 +39,10 @@ export class PdfService {
       type: '',
     };
 
-    const response = await create(document, options);
-
-    return response;
+    try {
+      await create(document, options);
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 }
