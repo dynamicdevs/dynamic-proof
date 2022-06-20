@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { CertificatesService } from '../certificates/certificates.services';
 import { CertificateSheetLib } from '../lib/certificateSheet.lib';
@@ -10,14 +10,21 @@ import { resolve } from 'path';
 import nodeHtmlToImage from 'node-html-to-image';
 import QRCode from 'qrcode';
 import { Certificate } from '../../models/certificate';
+import { ConfigType } from '@nestjs/config';
+import config from '@env';
 
 @Injectable()
 export class GeneratorService {
+  private websiteUrl: string;
+
   constructor(
+    @Inject(config.KEY) private configService: ConfigType<typeof config>,
     private certificatesService: CertificatesService,
     private pdfService: PdfService,
     private certificateSheetLib: CertificateSheetLib
-  ) {}
+  ) {
+    this.websiteUrl = this.configService.websiteUrl;
+  }
 
   public async generateCerficates() {
     const certificates = await this.certificatesService.getCertificatesList();
@@ -84,7 +91,7 @@ export class GeneratorService {
       mkdirSync(path, { recursive: true });
     }
 
-    const url = `https://www.certificate.dynamicdevs.io/${value}`;
+    const url = `${this.websiteUrl}/${value}`;
 
     try {
       await QRCode.toFile(`${path}/code-qr.png`, url);
