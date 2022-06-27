@@ -47,6 +47,7 @@ jobs:
         run: npx nx lint proof
 
   build-web:
+    needs: [setup]
     environment: ${{ github.ref_name != 'main' && 'develop' || 'prod' }}
     runs-on: ubuntu-18.04
     steps:
