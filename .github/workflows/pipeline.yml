@@ -1,0 +1,85 @@
+name: Dynamic Proof Pipeline
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop]
+    types: [opened, synchronize]
+
+jobs:
+  reduncy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Cancel Previous Redundant Builds
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+  setup:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Symbol - Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci --force
+
+  lint-web:
+    needs: [setup]
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Dynamic Proof - Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Web Linter
+        run: npx nx lint proof
+
+  build-web:
+    needs: [setup]
+    environment: ${{ github.ref_name != 'main' && 'develop' || 'prod' }}
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Dynamic Proof - Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Web
+        uses: ./.github/actions/project-builder
+        with:
+          project: proof
+      - name: Upload build files
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: proof
+          path: dist/apps/proof
+
+  deploy-web:
+    needs: [build-web, lint-web]
+    runs-on: ubuntu-18.04
+    environment: ${{ github.ref_name != 'main' && 'develop' || 'prod' }}
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Download build files
+        uses: actions/download-artifact@v3
+        with:
+          name: proof
+          path: dist
+      - name: Deploy in Azure Storage
+        uses: TravisSpomer/deploy-to-azure-storage@v1.4.0
+        with:
+          source-path: dist
+          sas-url: ${{ secrets.DEPLOY_SAS_URL }}
+          container: ${{ secrets.STORAGE_CONTAINER }}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { environment } from 'apps/proof/src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'proof-navbar',
@@ -7,7 +7,6 @@ import { environment } from 'apps/proof/src/environments/environment';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
-
   public baseAssetsUrl: string;
 
   constructor() {

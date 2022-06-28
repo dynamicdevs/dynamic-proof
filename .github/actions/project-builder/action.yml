@@ -1,0 +1,25 @@
+name: 'Project Builder'
+description: 'Build of the project sent as input'
+
+inputs:
+  project:
+    description: 'The project for build'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+    - name: Restore node_modules
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('package-lock.json') }}
+    - name: Build project
+      run: npx nx build ${{ inputs.project }}
+      shell: bash
+
+
