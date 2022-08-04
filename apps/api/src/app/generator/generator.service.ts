@@ -13,9 +13,15 @@ import { Certificate } from '../../models/certificate';
 import { ConfigType } from '@nestjs/config';
 import config from '@env';
 
+import { BlobServiceClient, BlockBlobClient } from '@azure/storage-blob';
+
+import * as fs from 'fs';
+import * as util from 'util';
 @Injectable()
 export class GeneratorService {
   private websiteUrl: string;
+  private azureConnection: string;
+  private containerName: string;
 
   constructor(
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
@@ -24,48 +30,67 @@ export class GeneratorService {
     private certificateSheetLib: CertificateSheetLib
   ) {
     this.websiteUrl = this.configService.websiteUrl;
+    this.azureConnection = this.configService.azureStorageConnection;
+    this.containerName = this.configService.containerName;
   }
 
   public async generateCerficates() {
     const certificates = await this.certificatesService.getCertificatesList();
-    const values = [];
-    certificates.map((certificate) => {
-      if (
-        certificate.shouldBeGenerated !== undefined &&
-        certificate.shouldBeGenerated.trim().toLocaleUpperCase() ===
-          Conditional.YES
-      ) {
-        certificate.issueDate = longDateFormat(certificate.issueDate);
 
-        const path = `apps/api/src/outputs/${certificate.eventCode}/${certificate.id}`;
+    const values = await Promise.all(
+      certificates.map(async (certificate) => {
+        if (
+          certificate.shouldBeGenerated !== undefined &&
+          certificate.shouldBeGenerated.trim().toLocaleUpperCase() ===
+            Conditional.YES
+        ) {
+          certificate.issueDate = longDateFormat(certificate.issueDate);
+          certificate.name = certificate.name.trim().split(' ')[0];
+          certificate.lastname = certificate.lastname.trim().split(' ')[0];
 
-        const filename = this.getFilename(certificate);
+          const path = `apps/api/src/outputs/${certificate.eventCode}/${certificate.id}`;
 
-        const response = this.generateQR(path, certificate.id);
+          const storagePath = `${certificate.eventCode}/${certificate.id}`;
 
-        if (response) {
-          this.pdfService.generatePdfByTemplate(
-            certificate,
-            Template.HACKATON2022,
-            path,
-            filename
-          );
+          const filename = this.getFilename(certificate);
 
-          this.generateJPEG(certificate, Template.HACKATON2022, path, filename);
+          const response = await this.generateQR(path, certificate.id);
 
-          values.push(Conditional.NO);
+          if (response) {
+            this.upload(path, storagePath, 'code-qr.png');
+
+            const responsePDF = await this.pdfService.generatePdfByTemplate(
+              certificate,
+              Template.HACKATON2022,
+              path,
+              filename
+            );
+
+            if (responsePDF) this.upload(path, storagePath, `${filename}.pdf`);
+
+            const responseImage = await this.generateImage(
+              certificate,
+              Template.HACKATON2022,
+              path,
+              filename
+            );
+
+            if (responseImage)
+              this.upload(path, storagePath, `${filename}.png`);
+          }
+          return Conditional.NO;
+        } else {
+          return null;
         }
-      } else {
-        values.push(null);
-      }
-    });
+      })
+    );
 
     const range = `${CERTIFICATE_SHEET_NAME}!Q2`;
 
     this.certificateSheetLib.setValues(range, 'COLUMNS', values);
   }
 
-  private async generateJPEG<Type>(
+  private async generateImage<Type>(
     data: Type,
     template: string,
     path: string,
@@ -81,6 +106,7 @@ export class GeneratorService {
 
     try {
       await nodeHtmlToImage(options);
+      return true;
     } catch (err) {
       throw new Error(err);
     }
@@ -95,7 +121,6 @@ export class GeneratorService {
 
     try {
       await QRCode.toFile(`${path}/code-qr.png`, url);
-
       return true;
     } catch (err) {
       throw new Error(err);
@@ -108,5 +133,27 @@ export class GeneratorService {
     }`;
 
     return `${attendee}-${certificate.eventName.trim().replace(/\s/g, '-')}`;
+  }
+
+  private getBlobClient(fileName: string): BlockBlobClient {
+    const blobClientService = BlobServiceClient.fromConnectionString(
+      this.azureConnection
+    );
+    const containerClient = blobClientService.getContainerClient(
+      this.containerName
+    );
+    const blobClient = containerClient.getBlockBlobClient(fileName);
+    return blobClient;
+  }
+
+  private async upload(
+    localPath: string,
+    storagePath: string,
+    fileName: string
+  ) {
+    const readFile = util.promisify(fs.readFile);
+    const data = await readFile(`${localPath}/${fileName}`);
+    const blobClient = this.getBlobClient(`${storagePath}/${fileName}`);
+    await blobClient.uploadData(data);
   }
 }

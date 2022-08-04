@@ -578,8 +578,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   -webkit-align-self: flex-end;
 }
 
-.bg-\[url\(https\:\/\/dynamicdevscertificates\.blob\.core\.windows\.net\/assets\/templates\/001\/background\.png\)\] {
-  background-image: url(https://dynamicdevscertificates.blob.core.windows.net/assets/templates/001/background.png);
+.bg-\[url\(https\:\/\/dynamicdevscertificates\.blob\.core\.windows\.net\/assets\/templates\/0001\/background\.png\)\] {
+  background-image: url(https://dynamicdevscertificates.blob.core.windows.net/assets/templates/0001/background.png);
 }
 
 .px-28 {

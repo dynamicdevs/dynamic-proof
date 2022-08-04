@@ -41,6 +41,7 @@ export class PdfService {
 
     try {
       await create(document, options);
+      return true;
     } catch (err) {
       throw new Error(err);
     }
