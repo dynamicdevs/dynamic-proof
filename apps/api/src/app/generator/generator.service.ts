@@ -5,7 +5,6 @@ import { CertificateSheetLib } from '../lib/certificateSheet.lib';
 import { Conditional, Template } from '../../enum';
 import { PdfService } from './services/pdf.services';
 import { CERTIFICATE_SHEET_NAME, longDateFormat } from '@utils';
-import { readFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
 import nodeHtmlToImage from 'node-html-to-image';
 import QRCode from 'qrcode';
@@ -57,31 +56,40 @@ export class GeneratorService {
           const response = await this.generateQR(path, certificate.id);
 
           if (response) {
-            this.upload(path, storagePath, 'code-qr.png');
+            const responseQR = this.upload(path, storagePath, 'code-qr.png');
 
-            const responsePDF = await this.pdfService.generatePdfByTemplate(
-              certificate,
-              Template.HACKATON2022,
-              path,
-              filename
-            );
+            if (responseQR) {
+              const responsePDF = await this.pdfService.generatePdfByTemplate(
+                certificate,
+                Template.HACKATON2022,
+                path,
+                filename
+              );
 
-            if (responsePDF) this.upload(path, storagePath, `${filename}.pdf`);
+              if (responsePDF)
+                this.upload(path, storagePath, `${filename}.pdf`);
 
-            const responseImage = await this.generateImage(
-              certificate,
-              Template.HACKATON2022,
-              path,
-              filename
-            );
+              const responseImage = await this.generateImage(
+                certificate,
+                Template.HACKATON2022,
+                path,
+                filename
+              );
 
-            if (responseImage)
-              this.upload(path, storagePath, `${filename}.png`);
+              if (responseImage)
+                this.upload(path, storagePath, `${filename}.png`);
+
+              fs.rm(path, { recursive: true }, (err) => {
+                if (err) {
+                  throw err;
+                }
+              });
+              
+              return Conditional.NO;
+            }
           }
-          return Conditional.NO;
-        } else {
-          return null;
         }
+        return null;
       })
     );
 
@@ -97,7 +105,7 @@ export class GeneratorService {
     filename: string
   ) {
     const templateUrl = `apps/api/src/app/generator/templates/${template}.html`;
-    const html = readFileSync(resolve(process.cwd(), templateUrl), 'utf8');
+    const html = fs.readFileSync(resolve(process.cwd(), templateUrl), 'utf8');
 
     const options = {
       html: html,
@@ -113,8 +121,8 @@ export class GeneratorService {
   }
 
   private async generateQR(path: string, value: string) {
-    if (!existsSync(path)) {
-      mkdirSync(path, { recursive: true });
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true });
     }
 
     const url = `${this.websiteUrl}/${value}`;
@@ -128,9 +136,7 @@ export class GeneratorService {
   }
 
   private getFilename(certificate: Certificate) {
-    const attendee = `${certificate.name.trim().split(' ')[0]}-${
-      certificate.lastname.trim().split(' ')[0]
-    }`;
+    const attendee = `${certificate.name}-${certificate.lastname}`;
 
     return `${attendee}-${certificate.eventName.trim().replace(/\s/g, '-')}`;
   }
@@ -151,9 +157,16 @@ export class GeneratorService {
     storagePath: string,
     fileName: string
   ) {
-    const readFile = util.promisify(fs.readFile);
-    const data = await readFile(`${localPath}/${fileName}`);
-    const blobClient = this.getBlobClient(`${storagePath}/${fileName}`);
-    await blobClient.uploadData(data);
+    if (fs.existsSync(localPath)) {
+      try {
+        const readFile = util.promisify(fs.readFile);
+        const data = await readFile(`${localPath}/${fileName}`);
+        const blobClient = this.getBlobClient(`${storagePath}/${fileName}`);
+        await blobClient.uploadData(data);
+        return true;
+      } catch (err) {
+        throw new Error(err);
+      }
+    }
   }
 }
