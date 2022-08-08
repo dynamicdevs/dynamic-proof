@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import config from '@env';
 import { ConfigType } from '@nestjs/config';
+import { PageSize, Orientation } from 'src/enum';
 @Injectable()
 export class PdfService {
   private urlBase: string;
@@ -25,8 +26,8 @@ export class PdfService {
     const html = readFileSync(resolve(process.cwd(), templateUrl), 'utf8');
 
     const options = {
-      format: 'A4',
-      orientation: 'landscape',
+      format: PageSize.A4,
+      orientation: Orientation.LANDSCAPE,
     };
 
     const document = {

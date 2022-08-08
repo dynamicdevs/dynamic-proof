@@ -57,41 +57,39 @@ export class GeneratorService {
 
           const response = await this.generateQR(path, certificate.id);
 
-          if (response) {
-            const responseQR = this.upload(path, storagePath, 'code-qr.png');
+          if (!response) return;
 
-            if (responseQR) {
-              const responsePDF = await this.pdfService.generatePdfByTemplate(
-                certificate,
-                Template.HACKATON2022,
-                path,
-                filename
-              );
+          const responseQR = this.upload(path, storagePath, 'code-qr.png');
 
-              if (responsePDF)
-                this.upload(path, storagePath, `${filename}.pdf`);
+          if (!responseQR) return;
 
-              const responseImage = await this.generateImage(
-                certificate,
-                Template.HACKATON2022,
-                path,
-                filename
-              );
+          const responsePDF = await this.pdfService.generatePdfByTemplate(
+            certificate,
+            Template.HACKATON2022,
+            path,
+            filename
+          );
 
-              if (responseImage)
-                this.upload(path, storagePath, `${filename}.png`);
+          if (responsePDF) this.upload(path, storagePath, `${filename}.pdf`);
 
-              fs.rm(path, { recursive: true }, (err) => {
-                if (err) {
-                  throw err;
-                }
-              });
-              
-              return Conditional.NO;
+          const responseImage = await this.generateImage(
+            certificate,
+            Template.HACKATON2022,
+            path,
+            filename
+          );
+
+          if (responseImage) this.upload(path, storagePath, `${filename}.png`);
+
+          fs.rm(path, { recursive: true }, (err) => {
+            if (err) {
+              throw err;
             }
-          }
+          });
+
+          return Conditional.NO;
         }
-        return null;
+        return;
       })
     );
 
