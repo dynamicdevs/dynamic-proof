@@ -21,6 +21,7 @@ export class GeneratorService {
   private websiteUrl: string;
   private azureConnection: string;
   private containerName: string;
+  private urlBase: string;
 
   constructor(
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
@@ -31,6 +32,7 @@ export class GeneratorService {
     this.websiteUrl = this.configService.websiteUrl;
     this.azureConnection = this.configService.azureStorageConnection;
     this.containerName = this.configService.containerName;
+    this.urlBase = this.configService.urlBase;
   }
 
   public async generateCerficates() {
@@ -109,7 +111,12 @@ export class GeneratorService {
 
     const options = {
       html: html,
-      content: [{ ...data, output: `${path}/${filename}.png` }],
+      content: [
+        {
+          ...data, urlBase: this.urlBase,
+          output: `${path}/${filename}.png`,
+        },
+      ],
     };
 
     try {
