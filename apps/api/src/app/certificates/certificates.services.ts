@@ -11,7 +11,9 @@ import { CertificateResponseDto } from 'src/dtos';
 
 @Injectable()
 export class CertificatesService {
-  constructor(private sheetsLib: CertificateSheetLib) {}
+
+  constructor(private sheetsLib: CertificateSheetLib) {
+  }
 
   public async getCertificateById(
     certificateId: string

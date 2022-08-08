@@ -2,11 +2,12 @@
 <html>
   <head>
     <title>Hackathon 2022</title>
-    <link rel="stylesheet" href="https://drive.google.com/uc?export=view&id=18SqxMdR_y7p0PbZNncY4AaYXQ9ctx3sp"/>
+    <link rel="stylesheet" href="{{urlBase}}/assets/templates/{{eventCode}}/styles.css" />
   </head>
-  <body class="px-28 h-[793px] w-[1122px] flex flex-col justify-center bg-[url({{urlBase}}/assets/templates/001/background.png)]">
+  <body
+    class="px-28 h-[793px] w-[1122px] flex flex-col justify-center bg-[url({{urlBase}}/assets/templates/{{eventCode}}/background.png)]">
     <header class="flex justify-end">
-      <img src="{{urlBase}}/assets/templates/001/logo-hackathon2022.png" alt="Logo Hackathon 2022">
+      <img src="{{urlBase}}/assets/templates/{{eventCode}}/logo-hackathon2022.png" alt="Logo Hackathon 2022">
     </header>
     <main class="flex">
       <div class="w-full mr-8">
@@ -31,7 +32,7 @@
         <div class="text-primary-neutral-100 flex flex-col">
           <div class="h-26 flex items-center justify-center">
             <img
-              src="{{urlBase}}/assets/templates/001/jonathan-gonzalez-signature.png"
+              src="{{urlBase}}/assets/templates/{{eventCode}}/jonathan-gonzalez-signature.png"
               alt="Firma CEO"
               class="w-fit h-fit">
           </div>
@@ -41,7 +42,7 @@
         <div class="text-primary-neutral-100 flex flex-col">
           <div class="h-26 flex items-center justify-center">
             <img
-              src="{{urlBase}}/assets/templates/001/cesar-contreras-signature.png"
+              src="{{urlBase}}/assets/templates/{{eventCode}}/cesar-contreras-signature.png"
               alt="Firma CTO"
               class="w-fit h-fit">
           </div>
@@ -52,7 +53,7 @@
     </main>
     <footer class="mt-[54px]">
       <img
-        src="{{urlBase}}/certificates/001/{{id}}/code-qr.svg"
+        src="{{urlBase}}/certificates/{{eventCode}}/{{id}}/code-qr.png"
         alt="Código QR"
         class="h-[94px] w-[94px]">
     </footer>

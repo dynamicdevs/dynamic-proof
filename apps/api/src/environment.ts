@@ -8,6 +8,8 @@ interface IEnvironment {
   spreadsheetId: string;
   urlBase: string;
   websiteUrl: string;
+  azureStorageConnection: string;
+  containerName: string;
 }
 
 export const environment: IEnvironment = {
@@ -16,6 +18,8 @@ export const environment: IEnvironment = {
   spreadsheetId: process.env.SPREADSHEET_ID,
   urlBase: process.env.STORAGE_URL_BASE,
   websiteUrl: process.env.WEBSITE_URL,
+  azureStorageConnection: process.env.AZURE_STORAGE_CONNECTION,
+  containerName: process.env.CONTAINER_NAME
 };
 
 export default registerAs('config', () => {
