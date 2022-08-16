@@ -7,7 +7,8 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "start:azure": "nx build api && func host start --script-root apps/api"
   },
   "private": true,
   "dependencies": {
@@ -20,9 +21,11 @@
     "@angular/platform-browser": "14.0.0",
     "@angular/platform-browser-dynamic": "14.0.0",
     "@angular/router": "14.0.0",
+    "@azure/functions": "^1.0.3",
     "@azure/storage-blob": "^12.10.0",
     "@dynamic-devs/symbol": "^0.1.2",
     "@dynamic-devs/symbol-angular": "^0.1.2",
+    "@nestjs/azure-func-http": "^0.8.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.1",
     "@nestjs/core": "^8.0.0",
